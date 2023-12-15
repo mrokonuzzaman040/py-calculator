@@ -1,16 +1,51 @@
-# This is a sample Python script.
+import tkinter as tk
 
-# Press Shift+F10 to execute it or replace it with your code.
-# Press Double Shift to search everywhere for classes, files, tool windows, actions, and settings.
+def click_button(value):
+    current = entry.get()
+    entry.delete(0, tk.END)
+    entry.insert(tk.END, str(current) + str(value))
 
+def clear():
+    entry.delete(0, tk.END)
 
-def print_hi(name):
-    # Use a breakpoint in the code line below to debug your script.
-    print(f'Hi, {name}')  # Press Ctrl+F8 to toggle the breakpoint.
+def calculate():
+    try:
+        result = eval(entry.get())
+        entry.delete(0, tk.END)
+        entry.insert(tk.END, str(result))
+    except Exception as e:
+        entry.delete(0, tk.END)
+        entry.insert(tk.END, "Error")
 
+# Create the main window
+root = tk.Tk()
+root.title("Simple Calculator")
 
-# Press the green button in the gutter to run the script.
-if __name__ == '__main__':
-    print_hi('PyCharm')
+# Entry widget to display input and output
+entry = tk.Entry(root, width=30, borderwidth=5)
+entry.grid(row=0, column=0, columnspan=4, padx=10, pady=10)
 
-# See PyCharm help at https://www.jetbrains.com/help/pycharm/
+# Define buttons
+buttons = [
+    '7', '8', '9', '/',
+    '4', '5', '6', '*',
+    '1', '2', '3', '-',
+    '0', 'C', '=', '+'
+]
+
+# Create and place buttons on the grid
+row = 1
+col = 0
+for button in buttons:
+    if button == '=':
+        tk.Button(root, text=button, padx=40, pady=20, command=calculate).grid(row=row, column=col)
+    elif button == 'C':
+        tk.Button(root, text=button, padx=40, pady=20, command=clear).grid(row=row, column=col)
+    else:
+        tk.Button(root, text=button, padx=40, pady=20, command=lambda value=button: click_button(value)).grid(row=row, column=col)
+    col += 1
+    if col > 3:
+        col = 0
+        row += 1
+
+root.mainloop()
